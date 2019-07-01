@@ -21,10 +21,8 @@ template <typename Model, typename Msg, typename Update>
 auto
 start_eventloop(const std::vector<command_type<Model, Msg>>& init = {}) {
     auto                                 model = Model {};
-    std::deque<command_type<Model, Msg>> pending;
+    std::deque<command_type<Model, Msg>> pending{init.begin(), init.end()};
     std::vector<std::shared_future<Msg>> in_progress;
-
-    std::copy(init.begin( ), init.end( ), std::back_inserter(pending));
 
     while(pending.size( ) > 0 || in_progress.size( ) > 0) {
         // Step One: Apply all pending events and remove them
